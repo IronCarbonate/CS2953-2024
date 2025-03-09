@@ -1,0 +1,43 @@
+Including errors you met when doing the lab,
+or some techniques I found that helps me to finish the lab better. 
+
+## Environment : Ubuntu 
+I used wsl as the environment in this project.
+
+# Sleep
+
+## Errors
+Or to say, the problems I tackled with.
+
+First, what's the usage and difference between "fprintf" and "write"?
+->when we use "fprintf(2,str,strlen(str));", we send a message that the user deliver a wrong message.
+
+
+## 一些思考
+写不出英文了，就写中文吧。
+当我们发出sleep指令的时候，汇编是由"usys.pl"实现的。
+
+# Pingpong
+
+这俩都比较简单。
+为什么用parent_to_child[2]，数组的意义在何：
+从p_t_c[1]写入，从p_t_c[0]读出。
+
+# System call tracing
+
+有点杂。简述一下流程。
+1.在user.h里面定义int trace(int)，在usys.pl里面加一个entry，syscall.c里面加一个[SYS_trace] sys_trace和“"trace",”
+  hint里说的.h文件好像写好了不用自己写。
+
+2.sysproc.c里面加一个uint64 sys_trace(void)函数。
+  其实这里最好判断一下是否正在trace，但是发现这个是void函数，写完了发现好像也没啥问题，不过不够严谨。
+  函数有点多，但是可以在def.h里面找到。（为后面迅速找出错误埋下伏笔）
+
+# Sysinfo
+
+确实有点复杂。
+1.准备步骤和trace比较类似，略过。
+
+2.proc.c里面的count_free_proc函数，要不要加锁呢？并非必要，这里的函数是只读的，比较安全。
+
+3.这里我对kalloc.c也进行了修改，加入函数后报错了————第二步中也错了，没有在def.h里面定义函数导致无法调用（.c文件也不能直接include .c文件）。
