@@ -1,0 +1,17 @@
+# Backtrace
+每次call会allocate一个放在栈最顶端的stack frame
+当函数结束后stack frame被踢出stack
+然后PC跳转到下一条指令
+
+backtrace函数确实不算难写，就是其他要同步改的地方实在太多了
+包括alarm里面要改的小地方也很多很杂
+
+# Alarm
+主要修改为proc.h中proc结构体、syscall.c中添加了一个sig_sysalarm函数
+同时在proc.c的allocproc结构体中初始化一下三个新添加的变量
+再在trap.c中修改usertrap函数
+
+在第二部分中，我们要修改执行完alarm函数后程序崩溃的bug，因此
+跳转到alarm前必须复制完整的trapframe，在sigreturn中重新恢复寄存器
+
+这里主要是做一些简要的修改，问题不是很大

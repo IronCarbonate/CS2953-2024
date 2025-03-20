@@ -147,6 +147,18 @@ found:
   p->context.sp = p->kstack + PGSIZE;
 
   p->tracemask = 0;
+
+  p->alarm_handler = 0;
+  p->alarm_interval=0;
+  p->passed_ticks = 0;
+
+  if((p->alarmframe = (struct trapframe *)kalloc()) == 0){
+    freeproc(p);
+    release(&p->lock);
+    return 0;
+  }
+
+  p->trap_in = 0;
   return p;
 }
 
@@ -158,6 +170,8 @@ freeproc(struct proc *p)
 {
   if(p->trapframe)
     kfree((void*)p->trapframe);
+  if(p->alarmframe)
+    kfree((void*)p->alarmframe);
   p->trapframe = 0;
   if(p->pagetable)
     proc_freepagetable(p->pagetable, p->sz);

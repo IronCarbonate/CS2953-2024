@@ -106,4 +106,13 @@ struct proc {
   char name[16];               // Process name (debugging)
 
   uint64 tracemask;           // Trace mask
+  
+  int alarm_interval;         // Alarm interval
+  int passed_ticks;            // Alarm ticks
+  uint64 alarm_handler;       // Alarm handler
+
+  struct trapframe *alarmframe; // Alarm trapframe
+  struct usyscall *usyscallpage; // User syscall page
+
+  int trap_in;
 };
