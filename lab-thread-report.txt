@@ -1,0 +1,19 @@
+# uthread
+
+这次的lab感觉都比较简单，可能是因为上个学期系统课上写过thread的project
+首先uthread_switch.S里的部分，只要复制swtch.S中的部分就行
+
+uthread.c中，构造一个struct thread，用于保存每个线程寄存器的struct thread_context
+在clear_thread函数里初始化一个新线程，并补齐两段代码
+
+# pthread
+
+这个也不难，（问题已回答）
+
+写一个init函数并在main开头调用，修改put和get，主要是写一下lock和unlock
+
+#barrier
+
+同样，挺简单的，在struct barrier里加入三个参数，然后在barrier函数中加入开关锁
+
+这样lab就完成了
