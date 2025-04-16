@@ -103,7 +103,7 @@ kalloc(void)
       break;
     }
     release(&kmem.lock[id]);
-    id = (id+1)%NCPU;
+    id = (id+1)%NCPU;//steal
     if(i==id){
       break;
     }
@@ -132,4 +132,11 @@ kfreemem(void){
     release(&kmem.lock[i]);
   }
   return cnt;
+}
+
+void
+add_count(uint64 pa){
+    acquire(&cowlock);
+    cowCount[pa/PGSIZE]++;
+    release(&cowlock);
 }

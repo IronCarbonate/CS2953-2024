@@ -1,0 +1,14 @@
+# Memory Allocator
+  首先得对kmem的数据结构进行改动，内部改为数组
+  在kalloc和kfree的时候要先关闭interrupt，以防代码被放到另一个cpu上
+  其余的修改比较简单
+  感觉“id = (id+1)%NCPU;//steal”这个比较有意思
+
+# Buffer Cache
+  现要舍弃lru，可以大规模删减原代码，主要是调整一下hash的大小，
+  修改了bcache的结构
+  struct {
+  struct spinlock lock;
+  struct buf buf[BUCKET_SIZE];
+  } bcache[HASH_SIZE];
+  
