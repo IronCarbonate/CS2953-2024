@@ -1,0 +1,10 @@
+# speed up system calls
+在这里犯了一个毛病，导致写后面两项任务的时候也爆了，非常难受
+在proc_pagetable函数中，记得给USYSCALL补一笔
+剩下按部就班就行
+
+# print a page table
+主要是完成vmprint函数，基本上照着walk函数写就行了。
+
+# detect which pages have been accessed
+有点困难，但是还是花了一些时间写出来了。这里主要花了一些时间解决任务一遗留的问题————网上找了一些资料但是想的过于简单了。

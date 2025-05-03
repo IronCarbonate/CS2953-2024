@@ -112,7 +112,7 @@ struct proc {
   uint64 alarm_handler;       // Alarm handler
 
   struct trapframe *alarmframe; // Alarm trapframe
-  struct usyscall *usyscallpage; // User syscall page
+  struct usyscall *usyscall; // User syscall page
 
   int trap_in;
 };
