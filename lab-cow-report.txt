@@ -1,0 +1,12 @@
+make grade result:
+Score: 114/114
+
+这个lab有点复杂，但是首先去年写过cow_trie，这次课程讲的也很清楚，
+所以要干什么事都很清楚。
+
+但是实际上code方面还是有一些问题的。
+
+首先修改uvmcopy()函数、usertrap()函数。这里需要理解一下寄存器相关函数r_stval()
+还有识别read only、COW、正常修改页面，这里需要修改uvmcopy()，并在riscv.h里添加条目
+
+然后修改kalloc和kfree，并添加一个锁来保护cowCount

@@ -58,11 +58,11 @@ kfree(void *pa)
 {
   int id,remain;
   acquire(&cowlock);
-  remain = --cowCount[(uint64)pa / PGSIZE];
+    remain = --cowCount[(uint64)pa/PGSIZE];
   release(&cowlock);
-  if(remain>0){
+
+  if(remain)
     return;
-  }
 
   struct run *r;
 
@@ -80,7 +80,7 @@ kfree(void *pa)
   r->next = kmem.freelist[id];
   kmem.freelist[id] = r;
   release(&kmem.lock[id]);
-  pop_off();
+  pop_off();  
 }
 
 // Allocate one 4096-byte page of physical memory.
