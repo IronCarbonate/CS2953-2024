@@ -30,6 +30,7 @@ int uptime(void);
 
 int trace(int);
 int sysinfo(struct sysinfo*);
+int symlink(char *,char *);
 int sigalarm(int ticks, void (*handler)());
 int sigreturn(void);
 #ifdef LAB_NET

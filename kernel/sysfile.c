@@ -335,6 +335,35 @@ sys_open(void)
     }
   }
 
+  if(ip->type == T_SYMLINK && !(omode & O_NOFOLLOW)){
+    int np=0;
+    char sympath[MAXPATH];
+    memset(sympath, 0, MAXPATH);
+    int depth = 0;
+    int max_depth = 10;
+    while(depth < max_depth){
+      readi(ip,0,(uint64)&np,0,4);
+      readi(ip,0,(uint64)sympath,4,np);
+
+      iunlock(ip);
+      if((ip = namei(sympath)) == 0){
+        end_op();
+        return -1;
+      }
+      ilock(ip);
+      if(ip->type != T_SYMLINK){
+        break; // found the target
+      }
+      depth++;
+    }
+    if(depth == max_depth){
+      iunlockput(ip);
+      end_op();
+      printf("open():symlink too many depth\n");
+      return -1; // too many symlinks
+    }
+  }
+
   if(ip->type == T_DEVICE && (ip->major < 0 || ip->major >= NDEV)){
     iunlockput(ip);
     end_op();
@@ -501,5 +530,37 @@ sys_pipe(void)
     fileclose(wf);
     return -1;
   }
+  return 0;
+}
+
+
+uint64
+sys_symlink(void){
+  char target[MAXPATH],path[MAXPATH];
+  memset(target, 0, MAXPATH);
+  memset(path, 0, MAXPATH);
+  int nt = 0,np = 0;
+  struct inode *ip;
+
+  if((nt=argstr(0, target, MAXPATH)) < 0 || 
+     (np=argstr(1, path, MAXPATH)) < 0)
+    return -1;
+  
+  begin_op();
+  if((ip=namei(path)) != 0){
+    end_op();
+    return -1; // file already exists
+  }
+
+  ip = create(path, T_SYMLINK, 0, 0);
+  if(ip == 0){
+    end_op();
+    return -1; // failed to create symlink
+  } 
+
+  writei(ip,0,(uint64)&nt,0,4);
+  writei(ip,0,(uint64)target,4,nt);
+  iunlockput(ip);
+  end_op();
   return 0;
 }

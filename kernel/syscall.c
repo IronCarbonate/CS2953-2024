@@ -115,6 +115,11 @@ extern uint64 sys_pgaccess(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
+
+#ifdef LAB_FS
+extern uint64 sys_symlink(void);
+#endif
+
 static uint64 (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -146,6 +151,9 @@ static uint64 (*syscalls[])(void) = {
 #endif
 #ifdef LAB_PGTBL
 [SYS_pgaccess] sys_pgaccess,
+#endif
+#ifdef LAB_FS
+[SYS_symlink] sys_symlink,
 #endif
 };
 
