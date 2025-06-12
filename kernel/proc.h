@@ -81,6 +81,18 @@ struct trapframe {
 
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
+#define VMA_NUM 16
+struct vma{
+    int valid;
+    uint64 addr;
+    int length;
+    int prot;
+    int flags;
+    int fd;
+    int offset;
+    struct file* f;
+};
+
 // Per-process state
 struct proc {
   struct spinlock lock;
@@ -115,4 +127,5 @@ struct proc {
   struct usyscall *usyscall; // User syscall page
 
   int trap_in;
+  struct vma vmas[VMA_NUM]; // Virtual Memory Areas
 };

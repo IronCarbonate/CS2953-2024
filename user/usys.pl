@@ -43,3 +43,5 @@ entry("sigreturn");
 entry("connect");
 entry("pgaccess");
 entry("symlink");
+entry("mmap");
+entry("munmap");

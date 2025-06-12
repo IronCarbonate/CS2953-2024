@@ -1,0 +1,14 @@
+Score: 144/144
+
+想要Keep track of what mmap has mapped for each process，只需给process control block加一个VMA即可
+（见proc.h，同样在struct proc中加入vma）
+
+完成sys_mmap是主要任务，思路是：找空的VMA，检查安全性并填写VMA
+
+然后写page fault handler，只要改写trap.c里的usertrap函数即可
+因为引发page fault进入usertrap的时候我们仍处于用户态，
+所以我们可以直接使用myproc()以获取PCB
+
+完成sys_munmap：找到vma，若有必要，write back，然后改变长度和地址
+
+exit和fork都比较同质化，较为简单。

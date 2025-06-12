@@ -31,6 +31,8 @@ int uptime(void);
 int trace(int);
 int sysinfo(struct sysinfo*);
 int symlink(char *,char *);
+void *mmap(void *,size_t,int,int,int,off_t);
+int munmap(void *,size_t);
 int sigalarm(int ticks, void (*handler)());
 int sigreturn(void);
 #ifdef LAB_NET
